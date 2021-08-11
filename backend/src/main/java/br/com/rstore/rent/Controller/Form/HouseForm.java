@@ -1,6 +1,8 @@
 package br.com.rstore.rent.Controller.Form;
 
 import br.com.rstore.rent.Models.House;
+import br.com.rstore.rent.Models.Status;
+import br.com.rstore.rent.Repository.HouseRepository;
 
 import javax.validation.constraints.Digits;
 import javax.validation.constraints.NotEmpty;
@@ -38,6 +40,36 @@ public class HouseForm {
 
     public House Convert() {
         return new House(announcementTitle, area, forRent, price, zipCode, state, city, neighborhood, street, number, roomsQuant, floor, builtArea);
+    }
+
+    public House Update(Long id, HouseRepository houseRepository){
+        House house = houseRepository.getById(id);
+
+        house.setAnnouncementTitle(this.announcementTitle);
+        house.setArea(this.area);
+        house.setForRent(this.forRent);
+        house.setPrice(this.price);
+        house.setZipCode(this.zipCode);
+        house.setState(this.state);
+        house.setCity(this.city);
+        house.setNeighborhood(this.neighborhood);
+        house.setStreet(this.street);
+        house.setNumber(this.number);
+        house.setRoomsQuant(this.roomsQuant);
+        house.setFloor(this.floor);
+        house.setBuiltArea(this.builtArea);
+
+        return house;
+    }
+
+    public House changeAdStatus(Long id, HouseRepository houseRepository){
+        House house = houseRepository.getById(id);
+        if(house.getStatus().equals(Status.AVAILABLE)){
+            house.setStatus(Status.AVAILABLE);
+        }else if(house.getStatus().equals(Status.PAUSED)){
+            house.setStatus(Status.AVAILABLE);
+        }
+        return house;
     }
 
     public String getAnnouncementTitle() {

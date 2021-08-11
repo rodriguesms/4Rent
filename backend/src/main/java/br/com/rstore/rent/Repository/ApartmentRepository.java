@@ -1,9 +1,10 @@
 package br.com.rstore.rent.Repository;
 
 import br.com.rstore.rent.Models.Apartment;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
-import java.util.List;
 
 public interface ApartmentRepository extends JpaRepository<Apartment, Long> {
-    List<Apartment> findByForRent(Boolean forRent);
+    Page<Apartment> findByForRent(Boolean forRent, Pageable pagination);
 }

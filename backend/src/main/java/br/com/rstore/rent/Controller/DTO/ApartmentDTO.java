@@ -1,17 +1,20 @@
 package br.com.rstore.rent.Controller.DTO;
 
-import java.util.List;
+import java.time.LocalDateTime;
 import java.util.stream.Collectors;
 import br.com.rstore.rent.Models.Apartment;
+import org.springframework.data.domain.Page;
 
 public class ApartmentDTO {
 
     private Long id;
     private String announcementTitle;
+    private LocalDateTime announcementDate;
     private String city;
     private String state;
     private Double price;
     private Boolean forRent;
+    private String status;
 
     public ApartmentDTO(Apartment apartment){
         this.id = apartment.getId();
@@ -20,6 +23,16 @@ public class ApartmentDTO {
         this.state = apartment.getState();
         this.price = apartment.getPrice();
         this.forRent = apartment.getForRent();
+        this.status = apartment.getStatus().toString();
+        this.announcementDate = apartment.getAnnouncementDate();
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     public Long getId() {
@@ -70,7 +83,15 @@ public class ApartmentDTO {
         this.forRent = forRent;
     }
 
-    public static List<ApartmentDTO> Convert(List<Apartment> apartments){
-        return apartments.stream().map(ApartmentDTO::new).collect(Collectors.toList());
+    public LocalDateTime getAnnouncementDate() {
+        return announcementDate;
+    }
+
+    public void setAnnouncementDate(LocalDateTime announcementDate) {
+        this.announcementDate = announcementDate;
+    }
+
+    public static Page<ApartmentDTO> Convert(Page<Apartment> apartments){
+        return apartments.map(ApartmentDTO::new);
     }
 }

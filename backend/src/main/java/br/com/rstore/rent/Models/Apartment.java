@@ -1,6 +1,7 @@
 package br.com.rstore.rent.Models;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @Entity
 public class Apartment {
@@ -14,6 +15,7 @@ public class Apartment {
     @Enumerated(EnumType.STRING)
     private Status status = Status.AVAILABLE;
     private String announcementTitle;
+    private LocalDateTime announcementDate = LocalDateTime.now();
 
     //Product main info
     private Double area;
@@ -35,7 +37,7 @@ public class Apartment {
     private Integer floor;
     private Integer garageSpots;
 
-    public Apartment(String announcementTitle, Double area, Boolean forRent, Double price, String zipCode, String state, String city, String neighborhood, String street, Integer number, Double aptArea, Double condomValue, Integer roomsQuant, Integer floor, Integer garageSpots) {
+    public Apartment(String announcementTitle,  Double area, Boolean forRent, Double price, String zipCode, String state, String city, String neighborhood, String street, Integer number, Double aptArea, Double condomValue, Integer roomsQuant, Integer floor, Integer garageSpots) {
         this.announcementTitle = announcementTitle;
         this.area = area;
         this.forRent = forRent;
@@ -53,6 +55,8 @@ public class Apartment {
         this.garageSpots = garageSpots;
     }
 
+
+
     public Apartment(){  }
 
     public Long getId() {
@@ -61,6 +65,14 @@ public class Apartment {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public LocalDateTime getAnnouncementDate() {
+        return announcementDate;
+    }
+
+    public void setAnnouncementDate(LocalDateTime announcementDate) {
+        this.announcementDate = announcementDate;
     }
 
     public Owner getOwner() {

@@ -1,6 +1,9 @@
 package br.com.rstore.rent.Controller.Form;
 
 import br.com.rstore.rent.Models.Apartment;
+import br.com.rstore.rent.Models.Status;
+import br.com.rstore.rent.Repository.ApartmentRepository;
+
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.PositiveOrZero;
@@ -38,6 +41,59 @@ public class ApartmentForm {
     private String street;
     @NotNull @PositiveOrZero
     private Integer number;
+
+    public Apartment Convert() {
+        return new Apartment(announcementTitle, area, forRent, price, zipCode, state, city, neighborhood, street,
+                number, aptArea, condomValue, roomsQuant, floor, garageSpots);
+    }
+
+    public Apartment Update(Long id, ApartmentRepository apartmentRepository){
+        Apartment apartment = apartmentRepository.getById(id);
+
+        apartment.setAnnouncementTitle(this.announcementTitle);
+        apartment.setArea(this.area);
+        apartment.setForRent(this.forRent);
+        apartment.setPrice(this.price);
+        apartment.setZipCode(this.zipCode);
+        apartment.setState(this.state);
+        apartment.setCity(this.city);
+        apartment.setNeighborhood(this.neighborhood);
+        apartment.setStreet(this.street);
+        apartment.setNumber(this.number);
+        apartment.setAptArea(this.aptArea);
+        apartment.setCondomValue(this.condomValue);
+        apartment.setRoomsQuant(this.roomsQuant);
+        apartment.setFloor(this.floor);
+        apartment.setGarageSpots(this.garageSpots);
+
+        return apartment;
+    }
+
+    public Apartment changeAdStatus(Long id, ApartmentRepository apartmentRepository) {
+        Apartment apartment = apartmentRepository.getById(id);
+        if(apartment.getStatus().equals(Status.AVAILABLE)){
+            apartment.setStatus(Status.AVAILABLE);
+        }else if(apartment.getStatus().equals(Status.PAUSED)){
+            apartment.setStatus(Status.AVAILABLE);
+        }
+        return apartment;
+    }
+
+    /*public Apartment sellOrRentApartment(Long id, Long newOwnerId, ApartmentRepository apartmentRepository){
+
+        Apartment apartment = apartmentRepository.getById(id);
+        Owner newOwner =
+
+        if(apartment.getStatus() == Status.AVAILABLE){
+            apartment.setOwner(newOwner);
+            if(apartment.getForRent()){
+                apartment.setStatus(Status.RENTED);
+            }else{
+                apartment.setStatus(Status.SOLD);
+            }
+        }
+        return apartment;
+    }*/
 
     public String getZipCode() {
         return zipCode;
@@ -159,7 +215,4 @@ public class ApartmentForm {
         this.garageSpots = garageSpots;
     }
 
-    public Apartment Convert() {
-        return new Apartment(announcementTitle, area, forRent, price, zipCode, state, city, neighborhood, street, number, aptArea, condomValue, roomsQuant, floor, garageSpots);
-    }
 }

@@ -1,17 +1,21 @@
 package br.com.rstore.rent.Controller.DTO;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 import br.com.rstore.rent.Models.RealState;
+import org.springframework.data.domain.Page;
 
 public class RealStateDTO {
 
     private Long id;
     private String announcementTitle;
+    private LocalDateTime announcementDate;
     private String city;
     private String state;
     private Double price;
     private Boolean forRent;
+    private String status;
 
     public RealStateDTO(RealState realState){
         this.id = realState.getId();
@@ -20,6 +24,16 @@ public class RealStateDTO {
         this.state = realState.getState();
         this.price = realState.getPrice();
         this.forRent = realState.getForRent();
+        this.status = realState.getStatus().toString();
+        this.announcementDate = realState.getAnnouncementDate();
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     public Long getId() {
@@ -70,7 +84,15 @@ public class RealStateDTO {
         this.forRent = forRent;
     }
 
-    public static List<RealStateDTO> convert(List<RealState> realStates){
-        return realStates.stream().map(RealStateDTO::new).collect(Collectors.toList());
+    public LocalDateTime getAnnouncementDate() {
+        return announcementDate;
+    }
+
+    public void setAnnouncementDate(LocalDateTime announcementDate) {
+        this.announcementDate = announcementDate;
+    }
+
+    public static Page<RealStateDTO> Convert(Page<RealState> realStates){
+        return realStates.map(RealStateDTO::new);
     }
 }

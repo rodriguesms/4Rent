@@ -1,6 +1,8 @@
 package br.com.rstore.rent.Controller.Form;
 
 import br.com.rstore.rent.Models.RealState;
+import br.com.rstore.rent.Models.Status;
+import br.com.rstore.rent.Repository.RealStateRepository;
 
 import javax.validation.constraints.Digits;
 import javax.validation.constraints.NotEmpty;
@@ -32,6 +34,32 @@ public class RealStateForm {
 
     public RealState Convert(){
         return new RealState(area, forRent, price, announcementTitle, zipCode, state, city, neighborhood, street, number);
+    }
+
+    public RealState Update(Long id, RealStateRepository realStateRepository){
+        RealState realState = realStateRepository.getById(id);
+
+        realState.setAnnouncementTitle(this.announcementTitle);
+        realState.setArea(this.area);
+        realState.setForRent(this.forRent);
+        realState.setPrice(this.price);
+        realState.setZipCode(this.zipCode);
+        realState.setState(this.state);
+        realState.setCity(this.city);
+        realState.setNeighborhood(this.neighborhood);
+        realState.setStreet(this.street);
+        realState.setNumber(this.number);
+
+        return realState;
+    }
+
+    public RealState changeAdStatus(Long id, RealStateRepository realStateRepository){
+        RealState realState = realStateRepository.getById(id);
+        if(realState.getStatus().equals(Status.AVAILABLE)){
+            realState.setStatus(Status.AVAILABLE);
+        }else if(realState.getStatus().equals(Status.PAUSED)){
+            realState.setStatus(Status.AVAILABLE);
+        }        return realState;
     }
 
     public String getAnnouncementTitle() {
