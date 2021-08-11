@@ -1,0 +1,15 @@
+{
+    "announcementTitle":"Big house at JP Center",
+    "area":150.00,
+    "forRent": false,
+    "price": 350000.00,
+    "zipCode": "58713-700",
+    "state": "Paraiba",
+    "city": "João Pessoa",
+    "neighborhood": "Center",
+    "street": "Main street",
+    "number": 874,
+    "roomsQuant": 5,
+    "floor": 2,
+    "builtArea": 120.00
+}

@@ -1,0 +1,12 @@
+{
+    "announcementTitle":"Real State for daily rent",
+    "area":300.00,
+    "forRent": true,
+    "price": 150.00,
+    "zipCode": "58297-000",
+    "state": "Paraiba",
+    "city": "Rio Tinto",
+    "neighborhood": "Center",
+    "street": "Main street",
+    "number": 134
+}
