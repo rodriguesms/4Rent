@@ -1,13 +1,13 @@
 package br.com.rstore.rent.Controller.Form;
 
 import br.com.rstore.rent.Models.Apartment;
+import br.com.rstore.rent.Models.Owner;
 import br.com.rstore.rent.Models.Status;
 import br.com.rstore.rent.Repository.ApartmentRepository;
+import br.com.rstore.rent.Repository.OwnerRepository;
 
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.PositiveOrZero;
-import javax.validation.constraints.Digits;
+import javax.validation.constraints.*;
+import java.util.Optional;
 
 public class ApartmentForm {
 
@@ -41,10 +41,18 @@ public class ApartmentForm {
     private String street;
     @NotNull @PositiveOrZero
     private Integer number;
+    @NotNull @Email @NotEmpty
+    private String ownerEmail;
 
-    public Apartment Convert() {
-        return new Apartment(announcementTitle, area, forRent, price, zipCode, state, city, neighborhood, street,
-                number, aptArea, condomValue, roomsQuant, floor, garageSpots);
+    public Apartment Convert(OwnerRepository ownerRepository) {
+        Optional<Owner> owner = ownerRepository.findByEmail(ownerEmail);
+        if(owner.isPresent()) {
+            return new Apartment(announcementTitle, area, forRent, price, zipCode, state, city, neighborhood, street,
+                    number, aptArea, condomValue, roomsQuant, floor, garageSpots, owner.get());
+        }else{
+            return new Apartment(announcementTitle, area, forRent, price, zipCode, state, city, neighborhood, street,
+                    number, aptArea, condomValue, roomsQuant, floor, garageSpots, null);
+        }
     }
 
     public Apartment Update(Long id, ApartmentRepository apartmentRepository){
@@ -79,21 +87,13 @@ public class ApartmentForm {
         return apartment;
     }
 
-    /*public Apartment sellOrRentApartment(Long id, Long newOwnerId, ApartmentRepository apartmentRepository){
+    public String getOwnerEmail() {
+        return ownerEmail;
+    }
 
-        Apartment apartment = apartmentRepository.getById(id);
-        Owner newOwner =
-
-        if(apartment.getStatus() == Status.AVAILABLE){
-            apartment.setOwner(newOwner);
-            if(apartment.getForRent()){
-                apartment.setStatus(Status.RENTED);
-            }else{
-                apartment.setStatus(Status.SOLD);
-            }
-        }
-        return apartment;
-    }*/
+    public void setOwnerEmail(String ownerEmail) {
+        this.ownerEmail = ownerEmail;
+    }
 
     public String getZipCode() {
         return zipCode;

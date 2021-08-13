@@ -4,10 +4,11 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public class RealState {
 
     //Commercial info
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id @GeneratedValue(strategy = GenerationType.TABLE)
     private Long id;
     @ManyToOne
     private Owner owner;
@@ -20,6 +21,7 @@ public class RealState {
     private Double area;
     private Boolean forRent; // For rent = true, For sale = false
     private Double price;
+    private RealStateType type;
 
     // Address Info
     private String zipCode;
@@ -29,7 +31,7 @@ public class RealState {
     private String street;
     private Integer number;
 
-    public RealState(Double area, Boolean forRent, Double price, String announcementTitle, String zipCode, String state, String city, String neighborhood, String street, Integer number) {
+    public RealState(Double area, Boolean forRent, Double price, String announcementTitle, String zipCode, String state, String city, String neighborhood, String street, Integer number, Owner owner, RealStateType type) {
         this.area = area;
         this.forRent = forRent;
         this.price = price;
@@ -40,6 +42,8 @@ public class RealState {
         this.neighborhood = neighborhood;
         this.street = street;
         this.number = number;
+        this.owner = owner;
+        this.type = type;
     }
 
 
@@ -58,6 +62,14 @@ public class RealState {
         } else if (!id.equals(other.id))
             return false;
         return true;
+    }
+
+    public RealStateType getType() {
+        return type;
+    }
+
+    public void setType(RealStateType type) {
+        this.type = type;
     }
 
     public Owner getOwner() {

@@ -6,6 +6,7 @@ import br.com.rstore.rent.Controller.DTO.ApartmentDetailsDTO;
 import br.com.rstore.rent.Controller.Form.ApartmentForm;
 import br.com.rstore.rent.Models.Apartment;
 import br.com.rstore.rent.Repository.ApartmentRepository;
+import br.com.rstore.rent.Repository.OwnerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
@@ -29,6 +30,9 @@ public class ApartmentController {
     @Autowired
     ApartmentRepository apartmentRepository;
 
+    @Autowired
+    OwnerRepository ownerRepository;
+
     @GetMapping
     @Cacheable(value = "ApartmentsList")
     public Page<ApartmentDTO> listApartments(@RequestParam(required = false) Boolean forRent,
@@ -47,10 +51,10 @@ public class ApartmentController {
 
     @PostMapping
     @Transactional
-    @CacheEvict(value = "ApartmentsList")
+    @CacheEvict(value = {"RealStatesList", "ApartmentsList"}, allEntries = true)
     public ResponseEntity<ApartmentDTO> registerApartment(@RequestBody @Valid ApartmentForm apartmentForm,
                                                           UriComponentsBuilder uriBuilder){
-        Apartment apartment = apartmentForm.Convert();
+        Apartment apartment = apartmentForm.Convert(ownerRepository);
         apartmentRepository.save(apartment);
 
         URI uri = uriBuilder.path("/apartments/{id}").buildAndExpand(apartment.getId()).toUri();
@@ -69,7 +73,7 @@ public class ApartmentController {
 
     @PutMapping("/{id}")
     @Transactional
-    @CacheEvict(value = "ApartmentsList", allEntries = true)
+    @CacheEvict(value = {"RealStatesList", "ApartmentsList"}, allEntries = true)
     public ResponseEntity<ApartmentDTO> updateApartment(@PathVariable Long id,
                                                         @RequestBody @Valid ApartmentForm apartmentForm){
         Optional<Apartment> optionalApartment = apartmentRepository.findById(id);
@@ -83,7 +87,7 @@ public class ApartmentController {
 
     @PutMapping("/changeStatus?q={id}")
     @Transactional
-    @CacheEvict(value = "ApartmentsList", allEntries = true)
+    @CacheEvict(value = {"RealStatesList", "ApartmentsList"}, allEntries = true)
     public ResponseEntity<ApartmentDTO> changeApartmentStatus(@PathVariable Long id,
                                                               @RequestBody @Valid ApartmentForm apartmentForm){
         Optional<Apartment> optionalApartment = apartmentRepository.findById(id);
@@ -97,7 +101,7 @@ public class ApartmentController {
 
     @DeleteMapping("/{id}")
     @Transactional
-    @CacheEvict(value = "ApartmentsList", allEntries = true)
+    @CacheEvict(value = {"RealStatesList", "ApartmentsList"}, allEntries = true)
     public ResponseEntity<?> removeApartment(@PathVariable Long id){
         Optional<Apartment> optionalApartment = apartmentRepository.findById(id);
         if(optionalApartment.isPresent()){

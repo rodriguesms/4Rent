@@ -1,13 +1,13 @@
 package br.com.rstore.rent.Controller.Form;
 
 import br.com.rstore.rent.Models.House;
+import br.com.rstore.rent.Models.Owner;
 import br.com.rstore.rent.Models.Status;
 import br.com.rstore.rent.Repository.HouseRepository;
+import br.com.rstore.rent.Repository.OwnerRepository;
 
-import javax.validation.constraints.Digits;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.PositiveOrZero;
+import javax.validation.constraints.*;
+import java.util.Optional;
 
 public class HouseForm {
 
@@ -37,9 +37,15 @@ public class HouseForm {
     private Integer floor;
     @NotNull @Digits(integer = 9, fraction = 2) @PositiveOrZero
     private Double builtArea;
+    @NotNull @Email @NotEmpty
+    private String ownerEmail;
 
-    public House Convert() {
-        return new House(announcementTitle, area, forRent, price, zipCode, state, city, neighborhood, street, number, roomsQuant, floor, builtArea);
+    public House Convert(OwnerRepository ownerRepository) {
+        Optional<Owner> owner = ownerRepository.findByEmail(ownerEmail);
+        if(owner.isPresent())
+            return new House(announcementTitle, area, forRent, price, zipCode, state, city, neighborhood, street, number, roomsQuant, floor, builtArea, owner.get());
+        else
+            return new House(announcementTitle, area, forRent, price, zipCode, state, city, neighborhood, street, number, roomsQuant, floor, builtArea, null);
     }
 
     public House Update(Long id, HouseRepository houseRepository){
@@ -70,6 +76,14 @@ public class HouseForm {
             house.setStatus(Status.AVAILABLE);
         }
         return house;
+    }
+
+    public String getOwnerEmail() {
+        return ownerEmail;
+    }
+
+    public void setOwnerEmail(String ownerEmail) {
+        this.ownerEmail = ownerEmail;
     }
 
     public String getAnnouncementTitle() {

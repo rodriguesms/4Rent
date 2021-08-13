@@ -5,6 +5,7 @@ import br.com.rstore.rent.Controller.DTO.HouseDetailsDTO;
 import br.com.rstore.rent.Controller.Form.HouseForm;
 import br.com.rstore.rent.Models.House;
 import br.com.rstore.rent.Repository.HouseRepository;
+import br.com.rstore.rent.Repository.OwnerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
@@ -28,6 +29,9 @@ public class HouseController {
     @Autowired
     private HouseRepository houseRepository;
 
+    @Autowired
+    private OwnerRepository ownerRepository;
+
     @GetMapping
     @Cacheable(value = "HousesList")
     public Page<HouseDTO> listHouses(@RequestParam(required=false)Boolean forRent,
@@ -45,10 +49,10 @@ public class HouseController {
     }
 
     @PostMapping
-    @CacheEvict(value = "HousesList", allEntries = true)
+    @CacheEvict(value = {"RealStatesList", "HousesList"}, allEntries = true)
     public ResponseEntity<HouseDTO> registerHouse(@RequestBody @Valid HouseForm houseForm,
                                                   UriComponentsBuilder uriBuilder) {
-        House house = houseForm.Convert();
+        House house = houseForm.Convert(ownerRepository);
         houseRepository.save(house);
         URI uri = uriBuilder.path("/houses/{id}").buildAndExpand(house.getId()).toUri();
         return ResponseEntity.created(uri).body(new HouseDTO(house));
@@ -66,7 +70,7 @@ public class HouseController {
 
     @PutMapping("/{id}")
     @Transactional
-    @CacheEvict(value = "HousesList", allEntries = true)
+    @CacheEvict(value = {"RealStatesList", "HousesList"}, allEntries = true)
     public ResponseEntity<HouseDTO> updateHouse(@PathVariable Long id, @RequestBody @Valid HouseForm houseForm){
         Optional<House> optionalHouse = houseRepository.findById(id);
         if(optionalHouse.isPresent()){
@@ -79,7 +83,7 @@ public class HouseController {
 
     @PutMapping("/changeStatus?q={id}")
     @Transactional
-    @CacheEvict(value = "HousesList", allEntries = true)
+    @CacheEvict(value = {"RealStatesList", "HousesList"}, allEntries = true)
     public ResponseEntity<HouseDTO> changeHouseStatus(@PathVariable Long id, @RequestBody @Valid HouseForm houseForm){
         Optional<House> optionalHouse = houseRepository.findById(id);
         if(optionalHouse.isPresent()){
@@ -93,7 +97,7 @@ public class HouseController {
 
     @DeleteMapping("/{id}")
     @Transactional
-    @CacheEvict(value = "HousesList", allEntries = true)
+    @CacheEvict(value = {"RealStatesList", "HousesList"}, allEntries = true)
     public ResponseEntity<?> removeHouse(@PathVariable Long id){
         Optional<House> optionalHouse = houseRepository.findById(id);
         if(optionalHouse.isPresent()){

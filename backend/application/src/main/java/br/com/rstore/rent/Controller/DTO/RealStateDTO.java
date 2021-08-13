@@ -16,6 +16,7 @@ public class RealStateDTO {
     private Double price;
     private Boolean forRent;
     private String status;
+    private String type;
 
     public RealStateDTO(RealState realState){
         this.id = realState.getId();
@@ -26,6 +27,15 @@ public class RealStateDTO {
         this.forRent = realState.getForRent();
         this.status = realState.getStatus().toString();
         this.announcementDate = realState.getAnnouncementDate();
+        this.type = realState.getType().toString();
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 
     public String getStatus() {

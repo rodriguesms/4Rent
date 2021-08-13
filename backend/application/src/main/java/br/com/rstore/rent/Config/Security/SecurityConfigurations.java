@@ -49,6 +49,8 @@ public class SecurityConfigurations extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.GET, "/houses/*").permitAll()
                 .antMatchers(HttpMethod.GET, "/apartments").permitAll()
                 .antMatchers(HttpMethod.GET, "/apartments/*").permitAll()
+                .antMatchers(HttpMethod.GET, "/lands").permitAll()
+                .antMatchers(HttpMethod.GET, "/lands/*").permitAll()
                 .antMatchers(HttpMethod.GET, "/realstates").permitAll()
                 .antMatchers(HttpMethod.GET, "/realstates/*").permitAll()
                 .antMatchers(HttpMethod.GET, "/actuator").permitAll() // ONLY FOR TESTS WITH ACTUATOR (PRIVATE APP INFO)
