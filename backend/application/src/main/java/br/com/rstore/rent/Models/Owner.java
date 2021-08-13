@@ -30,6 +30,14 @@ public class Owner implements UserDetails {
         return result;
     }
 
+    public Owner(String name, String email, String password){
+        this.name = name;
+        this.email = email;
+        this.password = password;
+    }
+
+    public Owner(){}
+
     @Override
     public boolean equals(Object obj) {
         if (this == obj)

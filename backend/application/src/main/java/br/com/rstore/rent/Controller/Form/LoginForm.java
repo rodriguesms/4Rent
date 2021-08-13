@@ -2,9 +2,15 @@ package br.com.rstore.rent.Controller.Form;
 
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+
 public class LoginForm {
 
+    @NotEmpty @NotNull @Email
     private String email;
+    @NotEmpty @NotNull
     private String password;
 
     public UsernamePasswordAuthenticationToken Convert(){
