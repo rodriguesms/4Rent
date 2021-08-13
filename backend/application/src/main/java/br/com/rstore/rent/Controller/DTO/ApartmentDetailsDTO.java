@@ -36,7 +36,7 @@ public class ApartmentDetailsDTO {
     public ApartmentDetailsDTO(Apartment apartment){
 
         this.id = apartment.getId();
-        this.ownerName = "apartment.getOwner().getName()";
+        this.ownerName = apartment.getOwner().getName();
         this.status = apartment.getStatus().toString();
         this.announcementTitle = apartment.getAnnouncementTitle();
         this.announcementDate = apartment.getAnnouncementDate();

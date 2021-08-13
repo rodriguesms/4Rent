@@ -31,7 +31,7 @@ public class HouseDetailsDTO {
 
     public HouseDetailsDTO(House house){
         this.id = house.getId();
-        this.ownerName = "house.getOwner().getName()";
+        this.ownerName = house.getOwner().getName();
         this.status = house.getStatus().toString();
         this.announcementTitle = house.getAnnouncementTitle();
         this.announcementDate = house.getAnnouncementDate();
