@@ -1,3 +1,6 @@
+## ENVIRONMENT VARIABLES ##
+.env
+
 HELP.md
 .gradle
 build/

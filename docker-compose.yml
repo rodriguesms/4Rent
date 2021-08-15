@@ -1,0 +1,29 @@
+version: '3'
+
+services:
+
+  database:
+    image: "postgres" 
+    env_file: 
+      - .env
+    volumes:
+      - ./db:/docker-entrypoint-initdb.d/
+    ports:
+      - 5432:5432
+  
+  backend:
+    image: "4rent"
+    build:
+      context: .
+    env_file: 
+      - .env
+    container_name: 4rent
+    depends_on: 
+      - database
+    network_mode: host
+
+
+
+      
+    
+  
