@@ -1,4 +1,5 @@
 import React from 'react';
+import Header from './components/Header/Header'
 import './style.css';
 
 interface HomeProps { }
@@ -7,18 +8,7 @@ interface HomeProps { }
 const Home:React.FC<HomeProps> = ({}) => {
     return(
         <div>
-            <header className="header">
-                <div className="toolbar">
-                    <div>
-                        <span>4Rent</span>
-                    </div>
-                    <div>
-                        <button>Announce Real State</button>
-                        <span>img1</span>
-                        <span>img2</span>
-                    </div>
-                </div>
-            </header>
+            <Header />
             <main className="main">
                 <div className="navbar">navbar</div>
                 <div className="announcements">announcements</div>
