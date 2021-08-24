@@ -1,18 +1,25 @@
-import React from "react";
+import React, { useState } from "react";
 import './style.css';
 
 interface HeaderProps {}
 
-// eslint-disable-next-line
-const Header:React.FC<HeaderProps> = ({}) => {
+
+const Header:React.FC<HeaderProps> = () => {
+
+    const [isLogged, setLogin] = useState<boolean>(true);
+    //setLogin(true);
+
     return(
         <header className="header">
             <div className="toolbar">
-                <div>
+                <div className="logo">
                     <a href="/">4Rent</a>
                 </div>
                 <div>
-                    <button>Announce Real State</button>
+                    {isLogged ? 
+                    <button>Announce</button>:
+                    <button>Login</button>}
+
                     <span>img1</span>
                     <span>img2</span>
                 </div>

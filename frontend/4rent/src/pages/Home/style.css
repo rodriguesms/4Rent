@@ -1,18 +1,8 @@
 .main {
     height: 100vh;
     display: flex;
-    width: 1200px;
-    margin: 0 auto;
-}
-
-.navbar {
-    width: 350px;
-    background: yellow;
-    padding: 24px;
-}
-
-.announcements {
-    background: green;
     width: 100%;
-    padding: 24px;
+    margin: 0 auto;
+    background-color: #485461;
+    background-image: linear-gradient(315deg, #485461 0%, #28313b 74%);
 }

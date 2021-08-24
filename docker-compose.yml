@@ -13,8 +13,6 @@ services:
   
   backend:
     image: "4rent"
-    build:
-      context: .
     env_file: 
       - .env
     container_name: 4rent

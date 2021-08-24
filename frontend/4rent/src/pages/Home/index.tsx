@@ -4,14 +4,11 @@ import './style.css';
 
 interface HomeProps { }
 
-// eslint-disable-next-line
-const Home:React.FC<HomeProps> = ({}) => {
+const Home:React.FC<HomeProps> = () => {
     return(
         <div>
             <Header />
             <main className="main">
-                <div className="navbar">navbar</div>
-                <div className="announcements">announcements</div>
             </main>
         </div>
     );
