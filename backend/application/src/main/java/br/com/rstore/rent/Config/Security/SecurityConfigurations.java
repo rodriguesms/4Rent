@@ -1,6 +1,5 @@
 package br.com.rstore.rent.Config.Security;
 
-import antlr.Token;
 import br.com.rstore.rent.Repository.OwnerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
