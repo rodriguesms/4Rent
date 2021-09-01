@@ -2,8 +2,16 @@ import React from 'react';
 import GlobalContext from './context';
 import Home from './pages/Home/index';
 import SignIn from './pages/SignIn/index'
+import NewRealState from './pages/Announce/announce';
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import { ThemeProvider, createTheme } from '@material-ui/core/styles'
+import GuestRoute from './routes/Guest'
+import { Provider } from 'react-redux';
+import store from './redux/store';
+import { useSelector } from 'react-redux';
+import Auth from './components/Auth/auth'
+import AuthenticatedRoute from './routes/Authenticated';
+
 
 interface AppProps { }
 
@@ -19,15 +27,18 @@ const theme = createTheme({
 const App:React.FC<AppProps> = () => {
 
   return (
-    <ThemeProvider theme={theme}>
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/sign-in" element={<SignIn />} />
-          <Route path="*" element={<h1>404: Not Found</h1>} />
-        </Routes>
-      </BrowserRouter>
-    </ThemeProvider>
+    <Provider store={store}>
+      <ThemeProvider theme={theme}>
+        <BrowserRouter>
+          <Auth>
+            <Routes>
+              <Route path="//*" element={<Home />} />
+              <GuestRoute path="/sign-in" element={<SignIn/>} />
+            </Routes>
+          </Auth>
+        </BrowserRouter>
+      </ThemeProvider>
+    </Provider>
     );
 }
 export default App;

@@ -1,12 +1,13 @@
-import React from "react";
-import { Button } from '@material-ui/core';
-//import '../style.css'
+import React, { useState } from "react";
+import { Button, CardActionArea, Typography } from '@material-ui/core';
 import { makeStyles } from '@material-ui/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar'
-import SvgIcon from '@material-ui/core/SvgIcon'
 import Avatar from '@material-ui/core/Avatar'
 import { useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux'
+import authServices from "../../../../services/authServices";
+import UserIcon from "./UserIcon";
 
 interface HeaderProps { }
 
@@ -28,34 +29,37 @@ const useStyles = makeStyles({
     button1: {
         marginRight: 10
     },
-    button2: {
-        marginRight: 10
+    user: {
+        width: 'auto',
+        display: 'flex',
+        flexDirection: 'row',
+        alignItems: 'center',
+        borderRadius: 16,
+    },
+    username: {
+        fontSize: 18,
+        color: '#494949',
+        marginRight: 16
+    },
+    iconHome: {
+        width: 50,
     }
 });
 
 const Header:React.FC<HeaderProps> = () => {
-    
-    const isLogged = false;
+
     const navigate = useNavigate();
     const classes = useStyles();
+    const user = useSelector((state: any) => state.account.user);
 
     return(
         <AppBar position="fixed" className={classes.appbar}>
             <Toolbar>
-                <img src="/images/Group 2.svg" alt="logo.svg" className={classes.img}></img>
+                <CardActionArea className={classes.iconHome} onClick={() => navigate('/feed')}>
+                    <img src="/images/Group 2.svg" alt="logo.svg" className={classes.img}></img>
+                </CardActionArea>
                 <div className={classes.grow}></div>
-                {isLogged ? (
-                    <div> 
-                        <div className={classes.userSection}>
-                            <Button color='secondary' variant='contained' className={classes.button1}>Announce</Button>
-                        </div>
-                        <Avatar alt="" src="/"/>
-                    </div>
-                ) : (
-                    <div>
-                        <Button color='secondary' onClick={() => navigate('/sign-in')} variant='contained' className={classes.button2}>Sign In</Button>
-                    </div>
-                )}
+                <UserIcon />
             </Toolbar>
         </AppBar>
     );

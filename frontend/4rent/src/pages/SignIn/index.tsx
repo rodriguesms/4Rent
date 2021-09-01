@@ -5,11 +5,12 @@ import LockOpenIcon from '@material-ui/icons/LockOpen';
 import VpnKeyIcon from '@material-ui/icons/VpnKey';
 import { useNavigate } from 'react-router-dom';
 import authServices from "../../services/authServices";
+import { useSelector } from "react-redux";
 import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { signIn } from '../../redux/actions/accountActions'
 
-interface SignInProps {
-
-}
+export interface SignInProps {}
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -81,30 +82,20 @@ const SignIn: React.FC<SignInProps> = () => {
 
     const classes = useStyles();
     const navigate = useNavigate();
-    
+    const account = useSelector(state => state);
+    //console.log(account)
+    const dispatch = useDispatch();
+
     const handleSignIn = async (email:string, password:string) => {
         try {
-            const response = await authServices.signIn(email, password);
-            console.log(response)
+            dispatch(signIn(email, password));
             navigate('/');
         } catch(error) {
             setErrorMessage(`Invalid Credentials!`);
         }
-    }    
-
-    /*async function handleSignIn(email: string, password: string) {
-        api
-        .post("/auth",{
-              email: email,
-              password: password
-   })
-        .then((response) => console.log(response))
-        .catch((err) => {
-          console.error("ops! ocorreu um erro" + err);
-        });
-    }*/
-
-    return(
+    }
+    
+     return(
         <div className={classes.root}>
             <div className={classes.container}>
                 <div className={classes.header}>Sign In</div>
