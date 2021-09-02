@@ -36,8 +36,6 @@ const UserIcon:React.FC<UserIconProps> = () => {
     const dispatch = useDispatch();
     const isAuthenticated = !!account.user
 
-    console.log(account.user)
-
     const handleOpen = () => {
         setOpen(true)
     }
@@ -49,6 +47,11 @@ const UserIcon:React.FC<UserIconProps> = () => {
         handleClose();
         await dispatch(signOut());
         navigate('/')
+    }
+
+    const goToProfile = () => {
+        handleClose();
+        navigate('/profile')
     }
 
     return(
@@ -72,7 +75,7 @@ const UserIcon:React.FC<UserIconProps> = () => {
                         open={isOpen}
                         onClose={handleClose}
                         getContentAnchorEl={null}
-                    >   <MenuItem>Profile</MenuItem>
+                    >   <MenuItem onClick={goToProfile}>Profile</MenuItem>
                         <MenuItem onClick={handleSignOut}>Sign Out</MenuItem>
                     </Menu>
                 </div>

@@ -7,21 +7,10 @@ import api
 import { Box, Container } from "@material-ui/core";
 import { FilterBar } from ".";
 
-const useStyles = makeStyles((theme) => ({
-    root: {
-    },
-    box: {
-
-    }
-}));
-
 interface FeedProps { }
-
 
 const Feed:React.FC<FeedProps> = () => {
     
-    const classes = useStyles();
-
     const [filter, setFilter] = React.useState('realstates');
     const [realStates, setRealStates] = useState<Array<RealStateDTO>>([]);
     const [isLoading, setLoading] = useState<boolean>(true);
@@ -40,21 +29,15 @@ const Feed:React.FC<FeedProps> = () => {
 
     if(isLoading){
         return(
-            <div>carregando</div>
+            <div></div>
         );
     }
 
-    /**<Container maxWidth="lg">
-                    <Box display="flex">
-                        <FilterBar filter={filter} setFilter={setFilter} refreshContent={getContent}/>
-                        <Feed filter={filter} getContent={getContent} isLoading={isLoading} realStateList={realStates}/>
-                    </Box>
-                </Container> */
 
     else {
         return(
-            <Container className={classes.root} maxWidth="lg">
-                <Box className={classes.box} display="flex">
+            <Container maxWidth="lg">
+                <Box display="flex">
                     <FilterBar filter={filter} setFilter={setFilter} refreshContent={getContent}/>
                     <div>
                     {realStates.map(element => (

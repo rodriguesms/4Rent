@@ -1,3 +1,4 @@
+import { rejects } from 'assert';
 import api from './api'
 
 type Owner = {
@@ -37,7 +38,6 @@ class AuthServices {
             api.get(
                 "/auth/retrieve", { headers: {Authorization : `Bearer ${this.getToken()}`} })
                 .then(response => {
-                console.log(response)
                 if(response.data.owner.username) {
                     resolve(response);
                 }else{
@@ -48,6 +48,26 @@ class AuthServices {
                 reject(error);
             })
         });
+    }
+
+    signUp = (username: string, email: string, password: string) => {
+        return new Promise((resolve, reject) => {
+            api.post("/auth/register", {
+            username: username,
+            email: email,
+            password: password
+        }).then((response) => {
+            if(response.data.email){
+                resolve(response);
+            }
+            else{
+                reject(response);
+            }
+        }).catch(error => {
+            reject(error);
+        })
+    })
+        
     }
 
     signOut = () => {

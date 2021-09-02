@@ -1,4 +1,4 @@
-import { LOGIN_SUCCESS, SILENT_LOGIN, SIGNOUT } from "../actions/accountActions";
+import { LOGIN_SUCCESS, SILENT_LOGIN, SIGNOUT, SIGNUP } from "../actions/accountActions";
 
 const INITIAL_STATE = {
     user: null

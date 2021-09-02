@@ -11,6 +11,8 @@ import store from './redux/store';
 import { useSelector } from 'react-redux';
 import Auth from './components/Auth/auth'
 import AuthenticatedRoute from './routes/Authenticated';
+import Profile from './pages/Profile';
+import SignUp from './pages/SignUp';
 
 
 interface AppProps { }
@@ -34,6 +36,7 @@ const App:React.FC<AppProps> = () => {
             <Routes>
               <Route path="//*" element={<Home />} />
               <GuestRoute path="/sign-in" element={<SignIn/>} />
+              <GuestRoute path="/register" element={<SignUp/>} />
             </Routes>
           </Auth>
         </BrowserRouter>

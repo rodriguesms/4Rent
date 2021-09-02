@@ -13,7 +13,6 @@ interface HeaderProps { }
 
 const useStyles = makeStyles({
     appbar: {
-        boxShadow: "none",
         background: "#fff"
     },
     img: {
