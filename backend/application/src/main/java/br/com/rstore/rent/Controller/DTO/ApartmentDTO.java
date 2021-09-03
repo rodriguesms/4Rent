@@ -1,7 +1,6 @@
 package br.com.rstore.rent.Controller.DTO;
 
 import java.time.LocalDateTime;
-import java.util.stream.Collectors;
 import br.com.rstore.rent.Models.Apartment;
 import org.springframework.data.domain.Page;
 

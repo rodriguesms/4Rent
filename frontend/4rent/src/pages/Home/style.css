@@ -1,15 +1,15 @@
 .header {
-    background-color: blue;
+    background:blue;
     width: 100%;
     position: fixed;
 }
 
 .toolbar {
     display: flex;
-    height: 75px;
     align-items: center;
-    justify-content: space-between;
+    height: 64px;
     padding: 0 24px;
+    justify-content: space-between;
 }
 
 .main {
@@ -19,14 +19,19 @@
     margin: 0 auto;
 }
 
-.navbar {
+.filter {
     width: 350px;
-    background: yellow;
+    background: red;
     padding: 24px;
 }
 
-.announcements {
-    background: green;
+.feed {
+    background: yellow;
     width: 100%;
-    padding: 24px;
+    padding: 24xp;
 }
+
+/*
+    background-color: #485461;
+    background-image: linear-gradient(315deg, #485461 0%, #28313b 74%);
+*/

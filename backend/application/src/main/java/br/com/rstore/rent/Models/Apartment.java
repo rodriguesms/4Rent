@@ -1,7 +1,6 @@
 package br.com.rstore.rent.Models;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
 
 @Entity
 public class Apartment extends RealState{

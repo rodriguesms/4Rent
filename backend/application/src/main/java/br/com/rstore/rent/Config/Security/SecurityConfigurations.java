@@ -1,6 +1,5 @@
 package br.com.rstore.rent.Config.Security;
 
-import antlr.Token;
 import br.com.rstore.rent.Repository.OwnerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -64,6 +63,7 @@ public class SecurityConfigurations extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.POST, "/auth").permitAll()
                 .antMatchers(HttpMethod.POST, "/auth/register").permitAll()
                 .anyRequest().authenticated()
+                .and().cors()
                 .and().csrf().disable()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and().addFilterBefore(new AuthThroughTokenFilter(tokenService, ownerRepository), UsernamePasswordAuthenticationFilter.class);
