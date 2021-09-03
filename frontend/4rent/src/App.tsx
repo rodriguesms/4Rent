@@ -1,17 +1,12 @@
 import React from 'react';
-import GlobalContext from './context';
 import Home from './pages/Home/index';
 import SignIn from './pages/SignIn/index'
-import NewRealState from './pages/Announce/announce';
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import { ThemeProvider, createTheme } from '@material-ui/core/styles'
 import GuestRoute from './routes/Guest'
 import { Provider } from 'react-redux';
 import store from './redux/store';
-import { useSelector } from 'react-redux';
 import Auth from './components/Auth/auth'
-import AuthenticatedRoute from './routes/Authenticated';
-import Profile from './pages/Profile';
 import SignUp from './pages/SignUp';
 
 

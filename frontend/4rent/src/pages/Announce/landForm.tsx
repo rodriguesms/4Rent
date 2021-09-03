@@ -8,7 +8,8 @@ import authServices from "../../services/authServices";
 import { LandForm, emptyLandForm } from "../../types";
 
 interface landFormProps {
-    land?: LandForm
+    land?: LandForm,
+    update?: boolean
 }
 
 const useStyles = makeStyles(({
@@ -94,7 +95,7 @@ const LandInput:React.FC<landFormProps> = ({ land = emptyLandForm }) => {
     const [definition, setDefinition] = useState<string>(String(land.forRent));
     const [neighborhood, setNeighborhood] = useState<string>(land.neighborhood);
     const [number, setNumber] = useState<number>(land.number);
-    const [ownerEmail, setOwnerEmail] = useState<string>(user.data.owner.email);
+    const [ownerEmail, setOwnerEmail] = useState<string>(user && user.data.owner.email);
     const [price, setPrice] = useState<number>(land.price);
     const [state, setState] = useState<string>(land.state);
     const [street, setStreet] = useState<string>(land.street);

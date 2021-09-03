@@ -1,12 +1,9 @@
-import React, { useState } from "react";
-import { Button, CardActionArea, Typography } from '@material-ui/core';
+import React from "react";
+import { CardActionArea } from '@material-ui/core';
 import { makeStyles } from '@material-ui/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar'
-import Avatar from '@material-ui/core/Avatar'
 import { useNavigate } from 'react-router-dom';
-import { useSelector } from 'react-redux'
-import authServices from "../../../../services/authServices";
 import UserIcon from "./UserIcon";
 
 interface HeaderProps { }
@@ -49,7 +46,6 @@ const Header:React.FC<HeaderProps> = () => {
 
     const navigate = useNavigate();
     const classes = useStyles();
-    const user = useSelector((state: any) => state.account.user);
 
     return(
         <AppBar position="fixed" className={classes.appbar}>

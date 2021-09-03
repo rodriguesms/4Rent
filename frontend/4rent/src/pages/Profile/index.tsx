@@ -1,4 +1,4 @@
-import { Box, Container, makeStyles, Typography, Paper, Button } from "@material-ui/core";
+import { Container, makeStyles, Typography, Button, IconButton } from "@material-ui/core";
 import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import RealStateCard from "../../components/RealStateCard";
@@ -7,6 +7,15 @@ import authServices from '../../services/authServices'
 import { RealStateDTO } from "../../types";
 import { signOut } from "../../redux/actions/accountActions";
 import { useNavigate } from 'react-router-dom';
+import EditIcon from '@material-ui/icons/Edit';
+import DeleteIcon from '@material-ui/icons/Delete';
+
+interface ProfileProps { 
+
+    setRealStateUpdateId: Function,
+    setRealStateUpdateType: Function
+
+}
 
 const useStyles = makeStyles(({
     root: {
@@ -44,15 +53,29 @@ const useStyles = makeStyles(({
         color: '#fff',
         padding: 16
     },
-    box: {
-
+    rsOperations: {
+        display: 'flex',
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center'
+    },
+    operationIcons: {
+        display: 'flex',
+        flexDirection: 'column',
+        marginLeft: 16
+    },
+    iconEdit: {
+        padding: 18,
+        color: '#fff',
+    },
+    iconDelete: {
+        padding: 18,
+        color: '#FF0000'
     }
 }))
 
-interface ProfileProps { }
 
-
-const Profile:React.FC<ProfileProps> = () => {
+const Profile:React.FC<ProfileProps> = ({ setRealStateUpdateType, setRealStateUpdateId }) => {
 
     const classes = useStyles();
     const dispatch = useDispatch();
@@ -92,6 +115,22 @@ const Profile:React.FC<ProfileProps> = () => {
         }
     }, [account]);
 
+    const handleEdit = (type: string, id: number) => {
+        setRealStateUpdateType(type==="APARTMENT" ? (`apartment`) : (type==="HOUSE" ? ('house') : ('land')));
+        setRealStateUpdateId(id);
+        navigate('/update');
+    }
+
+    const handleDelete = (rsType: string, id: number) => {
+        const type = (rsType==="HOUSE") ? ('houses') : ((rsType==="APARTMENT") ? ('apartments') : ('lands'));
+
+        api.delete(`/${type}/${id}`, {
+            headers: {Authorization : `Bearer ${authServices.getToken()}`}
+        }).then((response) => console.log(response))
+        .catch(error => console.error(error))
+        .finally(() => navigate('/feed'));
+    }
+
     if(isAuthenticated && !isLoading)
         return (
             <div className={classes.root}>
@@ -99,16 +138,24 @@ const Profile:React.FC<ProfileProps> = () => {
                     {`${account && account.user && account.user.data.owner.username }'s Real States`}
                 </Typography>
                 <Container className={classes.container} maxWidth="lg">
-                    <Box className={classes.box}>
                         {myRealStates.length > 0 ? (myRealStates.map(element => (
-                            <RealStateCard realState={element} key={element.id} filter={"realstates"}/>
+                            <div className={classes.rsOperations}>
+                                <RealStateCard realState={element} key={element.id} filter={"realstates"}/>
+                                <div className={classes.operationIcons}>
+                                    <IconButton onClick={() => handleEdit(element.type, element.id)} className={classes.iconEdit}>
+                                        <EditIcon fontSize="large"/>
+                                    </IconButton>
+                                    <IconButton onClick={() => handleDelete(element.type, element.id)} className={classes.iconDelete}>
+                                        <DeleteIcon fontSize="large"/>
+                                    </IconButton>
+                                </div>
+                            </div>
                         ))) : (
                         <Typography className={classes.noRealState}>
                             You do not have any registered Real State! :(
                         </Typography>
     
                         )}
-                    </Box>
                 </Container>
                 <Button color='secondary' onClick={handleSignOut} variant='contained'>Sign Out</Button>        
             </div>

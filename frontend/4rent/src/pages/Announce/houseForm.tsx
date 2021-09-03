@@ -2,14 +2,13 @@ import { Button, FormControl, FormControlLabel, FormHelperText, FormLabel, Paper
 import { makeStyles } from "@material-ui/styles";
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
-import { Navigate } from "react-router";
 import api from "../../services/api";
 import { HouseForm, emptyHouseForm } from "../../types";
 import { useNavigate } from 'react-router-dom'
 import authServices from "../../services/authServices";
 
 interface houseFormProps {
-    house?: HouseForm
+    house?: HouseForm,
 }
 
 const useStyles = makeStyles(({
@@ -79,7 +78,7 @@ const useStyles = makeStyles(({
     }
 }))
 
-const HouseInput:React.FC<houseFormProps> = ({ house = emptyHouseForm}) => {
+const HouseInput:React.FC<houseFormProps> = ({ house = emptyHouseForm }) => {
     
     const classes = useStyles();
     const navigate = useNavigate();

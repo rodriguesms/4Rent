@@ -4,8 +4,6 @@ import { Icon, Button, Typography, FormHelperText } from "@material-ui/core";
 import LockOpenIcon from '@material-ui/icons/LockOpen';
 import VpnKeyIcon from '@material-ui/icons/VpnKey';
 import { useNavigate } from 'react-router-dom';
-import authServices from "../../services/authServices";
-import { useSelector } from "react-redux";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { signIn } from '../../redux/actions/accountActions'
@@ -88,7 +86,6 @@ const SignIn: React.FC<SignInProps> = () => {
 
     const classes = useStyles();
     const navigate = useNavigate();
-    const account = useSelector(state => state);
     const dispatch = useDispatch();
 
     const handleSignIn = async (email:string, password:string) => {

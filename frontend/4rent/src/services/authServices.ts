@@ -1,4 +1,3 @@
-import { rejects } from 'assert';
 import api from './api'
 
 type Owner = {

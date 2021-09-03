@@ -59,7 +59,7 @@ const setUserData = () => {
 
 const signOut = () => {
     return async (dispatch: any) => {
-        const user = await authServices.signOut();
+        await authServices.signOut();
         
         dispatch({
             type: SIGNOUT

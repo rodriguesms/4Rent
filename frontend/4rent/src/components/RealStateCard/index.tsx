@@ -1,17 +1,14 @@
-import React, { useRef } from 'react';
+import React from 'react';
 import { ApartmentDetail, HouseDetail, LandDetail, RealStateDTO } from '../../types';
-import { makeStyles, createTheme, ThemeProvider, Icon } from '@material-ui/core';
+import { makeStyles, Icon } from '@material-ui/core';
 import Card from '@material-ui/core/Card';
 import CardActionArea from '@material-ui/core/CardActionArea';
 import CardHeader from '@material-ui/core/CardHeader'
-import CardContent from '@material-ui/core/CardContent'
-import CardActions from '@material-ui/core/CardActions'
 import Typography from '@material-ui/core/Typography';
 import moment from 'moment';
 import RoomIcon from '@material-ui/icons/Room';
 import PersonIcon from '@material-ui/icons/Person';
 import { useState } from 'react';
-import { useSelector } from 'react-redux';
 import api from '../../services/api';
 import LandscapeIcon from '@material-ui/icons/Landscape';
 import { useEffect } from 'react';
@@ -96,8 +93,6 @@ const RealStateCard:React.FC<RealStateCardProps> = ({ realState, filter = "reals
     const [houseDetail, setHouseDetails] = useState<HouseDetail>();
     const [landDetail, setLandDetails] = useState<LandDetail>();
 
-    const account = useSelector((state:any) => state.account);
-
     const getApiType = () => {
         switch(realState.type){
             case 'APARTMENT': {
@@ -158,8 +153,6 @@ const RealStateCard:React.FC<RealStateCardProps> = ({ realState, filter = "reals
             }).finally(() => setLoading(false));
         }
     }
-
-    const isAuthenticated = !!account.user;
 
     useEffect(() => {
         if(filter==="realstates"){

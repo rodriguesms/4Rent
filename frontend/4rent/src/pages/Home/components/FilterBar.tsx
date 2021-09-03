@@ -12,7 +12,6 @@ import HouseOutlined from '@material-ui/icons/HouseOutlined'
 import ApartmentOutlined from '@material-ui/icons/ApartmentOutlined'
 import Landscape from '@material-ui/icons/Landscape'
 import AllInclusiveIcon from '@material-ui/icons/AllInclusive';
-import authServices from "../../../services/authServices";
 import { useNavigate } from 'react-router-dom';
 import { useSelector } from "react-redux";
 

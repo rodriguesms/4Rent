@@ -1,14 +1,13 @@
 import { Button, FormControl, FormControlLabel, FormHelperText, FormLabel, Paper, Radio, RadioGroup, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/styles";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import api from "../../services/api";
+import { useNavigate } from 'react-router-dom'
 import authServices from "../../services/authServices";
-import { ApartmentForm, emptyApartmentForm } from "../../types";
-import { useNavigate } from 'react-router-dom';
 
-interface aptFormProps {
-    apartment?: ApartmentForm,
+interface updateApartmentFormProps {
+    id: number
 }
 
 const useStyles = makeStyles(({
@@ -78,50 +77,70 @@ const useStyles = makeStyles(({
     }
 }))
 
-const ApartmentInput:React.FC<aptFormProps> = ({apartment = emptyApartmentForm}) => {
-
-    const user = useSelector((state: any) => state.account.user);
+const UpdateApartment:React.FC<updateApartmentFormProps> = ({ id }) => {
+    
+    const classes = useStyles();
     const navigate = useNavigate();
 
-    const [errorMessage, setErrorMessage] = useState<string>();
+    const user = useSelector((state: any) => state.account.user);
 
-    const classes = useStyles();
+    const [errorMessage, setErrorMessage] = useState<string>();    
 
-    const [announcementTitle, setAnnouncementTitle] = useState<string>(apartment.announcementTitle);
-    const [aptArea, setAptArea] = useState<number>(apartment.aptArea);
-    const [area, setArea] = useState<number>(apartment.area);
-    const [city, setCity] = useState<string>(apartment.city);
-    const [condomValue, setCondomValue] = useState<number>(apartment.condomValue);
-    const [floor, setFloor] = useState<number>(apartment.floor);
-    const [definition, setDefinition] = useState<string>(String(apartment.forRent));
-    const [garageSpots, setGarageSpots] = useState<number>(apartment.garageSpots);
-    const [neighborhood, setNeighborhood] = useState<string>(apartment.neighborhood);
-    const [number, setNumber] = useState<number>(apartment.number);
+    const [isLoading, setLoading] = useState<boolean>(true);
+
+    const [announcementTitle, setAnnouncementTitle] = useState<string>();
+    const [aptArea, setAptArea] = useState<number>();
+    const [area, setArea] = useState<number>();
+    const [city, setCity] = useState<string>();
+    const [condomValue, setCondomValue] = useState<number>();
+    const [floor, setFloor] = useState<number>();
+    const [definition, setDefinition] = useState<string>(String());
+    const [garageSpots, setGarageSpots] = useState<number>();
+    const [neighborhood, setNeighborhood] = useState<string>();
+    const [number, setNumber] = useState<number>();
     const [ownerEmail, setOwnerEmail] = useState<string>(user.data.owner.email);
-    const [price, setPrice] = useState<number>(apartment.price);
-    const [roomsQuant, setRoomsQuant] = useState<number>(apartment.roomsQuant);
-    const [state, setState] = useState<string>(apartment.state);
-    const [street, setStreet] = useState<string>(apartment.street);
-    const [zipCode, setZipCode] = useState<string>(apartment.zipCode);
+    const [price, setPrice] = useState<number>();
+    const [roomsQuant, setRoomsQuant] = useState<number>();
+    const [state, setState] = useState<string>();
+    const [street, setStreet] = useState<string>();
+    const [zipCode, setZipCode] = useState<string>();
 
-    console.log(apartment);
-
-    const handleTypeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setDefinition((event.target as HTMLInputElement).value);
-    };
+    useEffect(() => {
+        setLoading(true);
+        api.get(`/apartments/${id}`)
+        .then((response) => {
+            setAnnouncementTitle(response.data.announcementTitle);
+            setAptArea(response.data.aptArea);
+            setArea(response.data.area);
+            setCity(response.data.city);
+            setCondomValue(response.data.condomValue);
+            setFloor(response.data.floor);
+            setDefinition(String(response.data.forRent));
+            setGarageSpots(response.data.garageSpots);
+            setNeighborhood(response.data.neighborhood);
+            setNumber(response.data.number);
+            setPrice(response.data.price);
+            setRoomsQuant(response.data.roomsQuant);
+            setState(response.data.state);
+            setStreet(response.data.street);
+            setZipCode(response.data.zipCode);
+        }).catch(error => console.error(error))
+        .finally(() => setLoading(false));
+    }, [id]);
 
     const handleSubmit = () => {
+        
         const forRent = definition==='true' ? (true) : (false);
 
-        api.post('/apartments', {
+        api.put(`/apartments/${id}`, {
             announcementTitle: announcementTitle,
             aptArea: aptArea,
             area: area,
-            condomValue: condomValue,
-            garageSpots: garageSpots,
             city: city,
+            condomValue: condomValue,
             floor: floor,
             forRent: forRent,
+            garageSpots: garageSpots,
             neighborhood: neighborhood,
             number: number,
             ownerEmail: ownerEmail,
@@ -140,6 +159,13 @@ const ApartmentInput:React.FC<aptFormProps> = ({apartment = emptyApartmentForm})
         })
     }
 
+    const handleTypeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setDefinition((event.target as HTMLInputElement).value);
+    };
+
+    if(isLoading){
+        return(<div></div>);
+    }
 
     return(
         <Paper className={classes.container}>
@@ -199,11 +225,12 @@ const ApartmentInput:React.FC<aptFormProps> = ({apartment = emptyApartmentForm})
                     variant="contained"
                     color="secondary"
                 >
-                    <Typography variant="body1">Submit</Typography>
+                    <Typography variant="body1">Update</Typography>
                 </Button>
             </div>
         </Paper>
     )
+
 }
 
-export default ApartmentInput;
+export default UpdateApartment;

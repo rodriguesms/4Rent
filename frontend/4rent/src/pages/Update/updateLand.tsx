@@ -1,14 +1,13 @@
 import { Button, FormControl, FormControlLabel, FormHelperText, FormLabel, Paper, Radio, RadioGroup, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/styles";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
+import { useNavigate } from "react-router";
 import api from "../../services/api";
 import authServices from "../../services/authServices";
-import { ApartmentForm, emptyApartmentForm } from "../../types";
-import { useNavigate } from 'react-router-dom';
 
-interface aptFormProps {
-    apartment?: ApartmentForm,
+interface updateLandFormprops {
+    id: number
 }
 
 const useStyles = makeStyles(({
@@ -78,55 +77,60 @@ const useStyles = makeStyles(({
     }
 }))
 
-const ApartmentInput:React.FC<aptFormProps> = ({apartment = emptyApartmentForm}) => {
+const UpdateLand:React.FC<updateLandFormprops> = ({ id }) => {
+    
+    const classes = useStyles();
 
-    const user = useSelector((state: any) => state.account.user);
     const navigate = useNavigate();
 
     const [errorMessage, setErrorMessage] = useState<string>();
 
-    const classes = useStyles();
+    const [isLoading, setLoading] = useState<boolean>(true);
 
-    const [announcementTitle, setAnnouncementTitle] = useState<string>(apartment.announcementTitle);
-    const [aptArea, setAptArea] = useState<number>(apartment.aptArea);
-    const [area, setArea] = useState<number>(apartment.area);
-    const [city, setCity] = useState<string>(apartment.city);
-    const [condomValue, setCondomValue] = useState<number>(apartment.condomValue);
-    const [floor, setFloor] = useState<number>(apartment.floor);
-    const [definition, setDefinition] = useState<string>(String(apartment.forRent));
-    const [garageSpots, setGarageSpots] = useState<number>(apartment.garageSpots);
-    const [neighborhood, setNeighborhood] = useState<string>(apartment.neighborhood);
-    const [number, setNumber] = useState<number>(apartment.number);
-    const [ownerEmail, setOwnerEmail] = useState<string>(user.data.owner.email);
-    const [price, setPrice] = useState<number>(apartment.price);
-    const [roomsQuant, setRoomsQuant] = useState<number>(apartment.roomsQuant);
-    const [state, setState] = useState<string>(apartment.state);
-    const [street, setStreet] = useState<string>(apartment.street);
-    const [zipCode, setZipCode] = useState<string>(apartment.zipCode);
+    const user = useSelector((state: any) => state.account.user);
 
-    console.log(apartment);
+    const [announcementTitle, setAnnouncementTitle] = useState<string>();
+    const [area, setArea] = useState<number>();
+    const [city, setCity] = useState<string>();
+    const [definition, setDefinition] = useState<string>();
+    const [neighborhood, setNeighborhood] = useState<string>();
+    const [number, setNumber] = useState<number>();
+    const [ownerEmail, setOwnerEmail] = useState<string>(user && user.data.owner.email);
+    const [price, setPrice] = useState<number>();
+    const [state, setState] = useState<string>();
+    const [street, setStreet] = useState<string>();
+    const [zipCode, setZipCode] = useState<string>();
 
-    const handleTypeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setDefinition((event.target as HTMLInputElement).value);
-    };
+    useEffect(() => {
+        setLoading(true);
+        api.get(`lands/${id}`)
+        .then((response) => {
+            setAnnouncementTitle(response.data.announcementTitle);
+            setArea(response.data.area);
+            setCity(response.data.city);
+            setDefinition(String(response.data.forRent));
+            setNeighborhood(response.data.neighborhood);
+            setNumber(response.data.number);
+            setPrice(response.data.price);
+            setState(response.data.state);
+            setStreet(response.data.street);
+            setZipCode(response.data.zipCode);
+        }).catch(error => console.error(error))
+        .finally(() => setLoading(false));
+    }, [id])
 
     const handleSubmit = () => {
         const forRent = definition==='true' ? (true) : (false);
 
-        api.post('/apartments', {
+        api.put(`/lands/${id}`, {
             announcementTitle: announcementTitle,
-            aptArea: aptArea,
             area: area,
-            condomValue: condomValue,
-            garageSpots: garageSpots,
             city: city,
-            floor: floor,
             forRent: forRent,
             neighborhood: neighborhood,
             number: number,
             ownerEmail: ownerEmail,
             price: price,
-            roomsQuant: roomsQuant,
             state: state,
             street: street,
             zipCode: zipCode
@@ -140,26 +144,22 @@ const ApartmentInput:React.FC<aptFormProps> = ({apartment = emptyApartmentForm})
         })
     }
 
+    const handleTypeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setDefinition((event.target as HTMLInputElement).value);
+    };
+
+    if(isLoading){
+        return(<div></div>);
+    }
 
     return(
         <Paper className={classes.container}>
             <div className={classes.header}>
-                <Typography variant="h4">Apartment</Typography>
+                <Typography variant="h4">Land</Typography>
             </div>
             <div className={classes.body}>
                 <input className={classes.input} type="text" placeholder={"Announcement Title"} value={announcementTitle} onChange={e => setAnnouncementTitle(e.target.value)}/>                
-                <div className={classes.twoInputsDiv}>
-                    <input className={classes.twoInputs} type="number" placeholder={"Total Area"} value={area || ''} onChange={e => setArea(parseFloat(e.target.value))}/>                
-                    <input className={classes.twoInputs} type="number" placeholder={"Apartment Area"} value={aptArea || ''} onChange={e => setAptArea(parseFloat(e.target.value))}/>                
-                </div>
-                <div className={classes.twoInputsDiv}>
-                    <input className={classes.twoInputs} type="number" placeholder={"Floor"} value={floor || ''} onChange={e => setFloor(parseInt(e.target.value))}/>                
-                    <input className={classes.twoInputs} type="number" placeholder={"Quantity of Bedrooms"} value={roomsQuant || ''} onChange={e => setRoomsQuant(parseInt(e.target.value))}/>                
-                </div>
-                <div className={classes.twoInputsDiv}>
-                    <input className={classes.twoInputs} type="number" placeholder={"Condominium Price"} value={condomValue || ''} onChange={e => setCondomValue(parseFloat(e.target.value))}/>                
-                    <input className={classes.twoInputs} type="number" placeholder={"Garage Spots"} value={garageSpots || ''} onChange={e => setGarageSpots(parseInt(e.target.value))}/>                
-                </div>
+                <input className={classes.input} type="number" placeholder={"Total Area"} value={area || ''} onChange={e => setArea(parseFloat(e.target.value))}/>                
                 <div className={classes.twoInputsDiv}>
                     <input className={classes.twoInputs} type="text" placeholder={"State"} value={state} onChange={e => setState(e.target.value)}/>                
                     <input className={classes.twoInputs} type="text" placeholder={"City"} value={city} onChange={e => setCity(e.target.value)}/>                
@@ -199,11 +199,11 @@ const ApartmentInput:React.FC<aptFormProps> = ({apartment = emptyApartmentForm})
                     variant="contained"
                     color="secondary"
                 >
-                    <Typography variant="body1">Submit</Typography>
+                    <Typography variant="body1">Update</Typography>
                 </Button>
             </div>
         </Paper>
     )
 }
 
-export default ApartmentInput;
+export default UpdateLand;
