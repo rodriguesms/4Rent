@@ -4,9 +4,16 @@ public class TokenDTO {
 
     private String token;
     private String type;
-    public TokenDTO(String token, String type) {
+    private OwnerDTO authenticated;
+
+    public TokenDTO(String token, String type, OwnerDTO authenticated) {
         this.token = token;
         this.type = type;
+        this.authenticated = authenticated;
+    }
+
+    public OwnerDTO getOwner() {
+        return authenticated;
     }
 
     public String getToken() {
